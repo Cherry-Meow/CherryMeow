@@ -1,1 +1,470 @@
-1
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>樱桃小铺 · 奶蓝购物站</title>
+  <style>
+    /* 全局重置与奶蓝色调系统 */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    }
+
+    body {
+      background-color: #e8f4fe;      /* 极浅奶蓝背景 */
+      color: #1e3a5f;
+      line-height: 1.5;
+      padding: 1.5rem 2rem 2rem 2rem;
+      min-height: 100vh;
+    }
+
+    /* 整个页面包裹，增加柔和阴影和纯白卡片感 */
+    .shop-wrapper {
+      max-width: 1280px;
+      margin: 0 auto;
+      background-color: #ffffffd9;     /* 半透白，透出一点奶蓝 */
+      backdrop-filter: blur(2px);
+      border-radius: 2.5rem;
+      box-shadow: 0 20px 40px -12px rgba(80, 140, 200, 0.28),
+                  0 8px 24px -8px rgba(70, 130, 180, 0.15);
+      padding: 2rem 2rem 1.5rem 2rem;
+      border: 1px solid #c8e2fc;
+    }
+
+    /* ---------- 顶部导航 (模仿购物站) ---------- */
+    .top-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 1.25rem;
+      border-bottom: 2px solid #d2e9ff;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .logo-icon {
+      font-size: 1.9rem;
+      line-height: 1;
+      filter: drop-shadow(0 2px 4px #acd0f0);
+    }
+
+    .logo-text {
+      font-size: 1.7rem;
+      font-weight: 600;
+      letter-spacing: -0.5px;
+      color: #2d6a9f;
+      text-shadow: 0 1px 2px #cce4ff;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      font-weight: 500;
+      color: #3e6d99;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: inherit;
+      padding: 0.3rem 0;
+      border-bottom: 2px solid transparent;
+      transition: border-color 0.15s, color 0.15s;
+    }
+
+    .nav-links a:hover {
+      border-bottom-color: #7eb6e6;
+      color: #1f4d7a;
+    }
+
+    .cart-area {
+      display: flex;
+      align-items: center;
+      gap: 1.4rem;
+      background: #ecf5fe;
+      padding: 0.5rem 1.2rem;
+      border-radius: 40px;
+      border: 1px solid #bed9f5;
+    }
+
+    .cart-icon {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-weight: 500;
+      color: #2b5d8a;
+    }
+
+    .cart-icon span {
+      font-size: 1.4rem;
+    }
+
+    .user-profile {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #2b5d8a;
+      font-weight: 500;
+    }
+
+    .avatar {
+      background: #b3d6f8;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      color: #1e4b77;
+    }
+
+    /* ---------- 主视觉 促销banner ---------- */
+    .hero-banner {
+      background: linear-gradient(105deg, #d8ecfe 0%, #b8daf8 100%);
+      border-radius: 2rem;
+      padding: 2rem 2.5rem;
+      margin-bottom: 2.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: inset 0 2px 10px rgba(255, 255, 255, 0.7), 0 10px 18px -8px #a6c8e8;
+      border: 1px solid #b2d2f2;
+    }
+
+    .hero-text h1 {
+      font-size: 2.2rem;
+      font-weight: 600;
+      color: #124072;
+      letter-spacing: -0.5px;
+      line-height: 1.3;
+    }
+
+    .hero-text p {
+      margin-top: 0.6rem;
+      font-size: 1.1rem;
+      color: #2a5e8a;
+      font-weight: 400;
+    }
+
+    .hero-cta {
+      background: #ffffffdb;
+      border: 1px solid #aacbf0;
+      border-radius: 3rem;
+      padding: 0.8rem 2rem;
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: #1f5280;
+      box-shadow: 0 6px 12px -6px #91b9dd;
+      cursor: default;
+      transition: all 0.1s;
+      white-space: nowrap;
+    }
+
+    /* ---------- 分类/筛选栏 (模仿购物站点) ---------- */
+    .category-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem 1.8rem;
+      align-items: center;
+      margin-bottom: 2rem;
+      padding: 0.6rem 0.2rem;
+    }
+
+    .category-pill {
+      background: #e2f0fe;
+      padding: 0.55rem 1.5rem;
+      border-radius: 40px;
+      font-weight: 500;
+      color: #2b6190;
+      border: 1px solid #b6d7f8;
+      font-size: 0.95rem;
+      transition: background 0.1s;
+      cursor: default;
+      box-shadow: 0 2px 6px #e5f0fc;
+    }
+
+    .category-pill.active {
+      background: #a9cef4;
+      color: #0c3356;
+      border-color: #7bb2e0;
+      font-weight: 600;
+      box-shadow: 0 4px 8px #b3d2f2;
+    }
+
+    /* ---------- 商品网格 ---------- */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1.8rem;
+      margin: 1.8rem 0 2.2rem;
+    }
+
+    .product-card {
+      background: #ffffff;
+      border-radius: 1.8rem;
+      padding: 1rem 1rem 1.3rem 1rem;
+      box-shadow: 0 12px 22px -12px #8fb8dd,
+                  0 4px 10px -4px #b8d3ee;
+      border: 1px solid #cce3fc;
+      transition: transform 0.15s ease, box-shadow 0.15s;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .product-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 22px 28px -14px #7ba9d4, 0 8px 16px -6px #aec9e8;
+      border-color: #a5c9f0;
+    }
+
+    /* 商品图片占位 — 用奶蓝渐变模拟商品图 */
+    .product-image {
+      background: linear-gradient(145deg, #c9e2fc, #aacbf0);
+      border-radius: 1.5rem;
+      height: 160px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3.2rem;
+      margin-bottom: 1rem;
+      border: 1px solid #b8d4f2;
+      box-shadow: inset 0 2px 8px #ffffffb8, 0 4px 8px #bbd4ee;
+      color: #2a5a89;
+    }
+
+    .product-title {
+      font-weight: 600;
+      font-size: 1.15rem;
+      margin-bottom: 0.3rem;
+      color: #103a5e;
+      padding: 0 0.2rem;
+    }
+
+    .product-desc {
+      font-size: 0.85rem;
+      color: #557da3;
+      margin-bottom: 0.7rem;
+      padding: 0 0.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .price-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: auto;
+      padding: 0 0.2rem;
+    }
+
+    .price {
+      font-weight: 700;
+      font-size: 1.4rem;
+      color: #1a4d78;
+    }
+
+    .price small {
+      font-size: 0.8rem;
+      font-weight: 400;
+      color: #6a8eb0;
+      margin-left: 0.2rem;
+    }
+
+    .add-btn {
+      background: #d3e8ff;
+      border: 1px solid #9ec2ea;
+      border-radius: 40px;
+      padding: 0.5rem 1rem;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: #1d4b76;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      cursor: default;
+      transition: background 0.1s;
+      box-shadow: 0 2px 6px #d0e4fa;
+    }
+
+    .add-btn:hover {
+      background: #bcdafb;
+    }
+
+    /* ---------- 底部信息 ---------- */
+    .footer {
+      margin-top: 2.2rem;
+      padding-top: 1.5rem;
+      border-top: 2px solid #d2e7ff;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      color: #4e759b;
+      font-size: 0.9rem;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .footer-links span {
+      cursor: default;
+    }
+
+    .copyright {
+      font-size: 0.85rem;
+      color: #6d93b8;
+    }
+
+    /* 空白页的隐藏彩蛋：真正的空白？其实内容都在 */
+    .visually-empty {
+      /* 没有实际用途，只是强化“空白页”的轻松感 */
+      height: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="shop-wrapper">
+    <!-- 顶部导航 -->
+    <header class="top-nav">
+      <div class="logo-area">
+        <span class="logo-icon">🍒</span>
+        <span class="logo-text">Cherry·小铺</span>
+      </div>
+      <div class="nav-links">
+        <a href="#">首页</a>
+        <a href="#">所有商品</a>
+        <a href="#">今日上新</a>
+        <a href="#">会员卡</a>
+      </div>
+      <div class="cart-area">
+        <div class="cart-icon">
+          <span>🛒</span> 购物车 (2)
+        </div>
+        <div class="user-profile">
+          <div class="avatar">👤</div>
+          <span>樱桃酱</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- 促销横幅 -->
+    <div class="hero-banner">
+      <div class="hero-text">
+        <h1>奶蓝夏日 · 清凉特惠</h1>
+        <p>精选商品 满¥299 减¥60 · 还有樱桃小铺专属赠品</p>
+      </div>
+      <div class="hero-cta">
+        立即抢购 →
+      </div>
+    </div>
+
+    <!-- 分类/筛选条 -->
+    <div class="category-bar">
+      <span class="category-pill active">全部</span>
+      <span class="category-pill">家居</span>
+      <span class="category-pill">数码</span>
+      <span class="category-pill">穿搭</span>
+      <span class="category-pill">美妆</span>
+      <span class="category-pill">食品</span>
+      <span class="category-pill">🍒 樱桃限定</span>
+    </div>
+
+    <!-- 商品网格 (典型的购物网站布局) -->
+    <div class="product-grid">
+      <!-- 商品 1 -->
+      <div class="product-card">
+        <div class="product-image">🧊</div>
+        <div class="product-title">极简奶蓝保温杯</div>
+        <div class="product-desc">316不锈钢 · 500ml</div>
+        <div class="price-row">
+          <span class="price">¥79 <small>起</small></span>
+          <span class="add-btn">➕ 加入</span>
+        </div>
+      </div>
+
+      <!-- 商品 2 -->
+      <div class="product-card">
+        <div class="product-image">🎧</div>
+        <div class="product-title">云朵降噪耳机</div>
+        <div class="product-desc">奶蓝配色 · 主动降噪</div>
+        <div class="price-row">
+          <span class="price">¥399</span>
+          <span class="add-btn">➕ 加入</span>
+        </div>
+      </div>
+
+      <!-- 商品 3 -->
+      <div class="product-card">
+        <div class="product-image">🧸</div>
+        <div class="product-title">樱桃小熊玩偶</div>
+        <div class="product-desc">柔软短绒 · 30cm</div>
+        <div class="price-row">
+          <span class="price">¥129</span>
+          <span class="add-btn">➕ 加入</span>
+        </div>
+      </div>
+
+      <!-- 商品 4 -->
+      <div class="product-card">
+        <div class="product-image">📓</div>
+        <div class="product-title">奶蓝手账本套装</div>
+        <div class="product-desc">含贴纸+胶带</div>
+        <div class="price-row">
+          <span class="price">¥49 <small>起</small></span>
+          <span class="add-btn">➕ 加入</span>
+        </div>
+      </div>
+
+      <!-- 商品 5 -->
+      <div class="product-card">
+        <div class="product-image">🍒</div>
+        <div class="product-title">樱桃小铺福袋</div>
+        <div class="product-desc">随机3件 · 价值¥199+</div>
+        <div class="price-row">
+          <span class="price">¥99</span>
+          <span class="add-btn">➕ 加入</span>
+        </div>
+      </div>
+
+      <!-- 商品 6 -->
+      <div class="product-card">
+        <div class="product-image">☁️</div>
+        <div class="product-title">云感空调毯</div>
+        <div class="product-desc">奶蓝/灰 · 150x200cm</div>
+        <div class="price-row">
+          <span class="price">¥159</span>
+          <span class="add-btn">➕ 加入</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 底部 -->
+    <footer class="footer">
+      <div class="footer-links">
+        <span>关于樱桃</span>
+        <span>配送说明</span>
+        <span>售后服务</span>
+        <span>隐私政策</span>
+      </div>
+      <div class="copyright">
+        © 2026 Cherry·小铺 | 奶蓝灵感购物站
+      </div>
+    </footer>
+  </div>
+  <!-- 保持空白的轻松感，没有任何多余脚本 -->
+</body>
+</html>
